@@ -1,0 +1,18 @@
+# Build output. upgrade.bin, the -full image and menu.rom are attached to the GitHub releases
+*.o
+*.d
+*.elf
+*.hex
+*.bin
+!tools/bootsector720.bin
+*.map
+*.lst
+kcmfs/*.rom
+kcmfs/build.inc
+# Test data for the menu-sim build, made from a picture and a MIDI file (see README)
+kcmfs/sim-*
+__pycache__/
+# Eclipse / STM32CubeIDE project files
+.cproject
+.project
+.settings/
