@@ -488,7 +488,7 @@ FRESULT load_rom(char *fname,char *lowbuffer, char* highbuffer) {
 }
 
 // ---------------------------------------------------------------------------------------------
-// Folder listing for the KCMFS menu and for NEXT/PREV
+// Folder listing for the menu and for NEXT/PREV
 
 uint32_t is_disk_image(char *name) {
 	return suffix_match(name, DSK_SUFFIX);

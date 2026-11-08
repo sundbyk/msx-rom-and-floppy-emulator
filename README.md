@@ -5,11 +5,11 @@ This is a continuation of kernelcrash's MSX rom and floppy emulator:
 https://github.com/kernelcrash/msx-rom-and-floppy-emulator (MIT licence, see LICENSE).
 More about the original at https://www.kernelcrash.com/blog/emulating-roms-and-floppy-drives-in-msx/
 
-New in this version (firmware 2.0, KCMFS 3):
+New in this version (firmware 2.0, MENU 3):
 
 - Bug fixes in the firmware, and the version shown in the menu with a build number.
 - Upgrading from the SD card: a bootloader flashes upgrade.bin.
-- KCMFS 3: folders, disk sets, search, file sizes, and runs on both MSX1 and MSX2.
+- MENU 3: folders, disk sets, search, file sizes, and runs on both MSX1 and MSX2.
 - Roms from 128K up to 512K run from the STM32's flash.
 - Tapes (.cas) load from the SD card, and snapshots (.msxsnap) for the 64K tapes that can not.
 - Covers (SCREEN 2 pictures) in the menu, and a music player for .vgm files made from MIDI.
@@ -18,6 +18,8 @@ New in this version (firmware 2.0, KCMFS 3):
 
 All of it has been tested in openMSX. Little of it has been tried on a real MSX yet, so
 the releases are marked as pre-releases.
+
+The menu (KCMFS in the original) is now just called MENU, and its source is in menu/.
 
 The rest of this file is kernelcrash's original text, brought up to date.
 
@@ -31,7 +33,7 @@ Overview
 - It also emulates a WD2793 floppy disk controller such that you can load disk images off the SD card. Two floppy drives are supported; A: and B:
 - It also (optionally) partially emulates a RP5C01 RTC chip (enough of it to make an MSX2 computer boot if you don't have that chip). This is only really of use to me! Comment out the
  ENABLE_RTC_RAM_BANK_EMULATION line in the Makefile if you don't need this emulation.
-- The code is still really 'proof of concept'. There is one button that allows you to cycle to the next rom or disk in a directory. Another button takes you to the previous rom or disk. However, I've added a simple boot menu mechanism where an MSX native program (kcmfs) presents a menu of files from the SD card and lets you boot from one of them.
+- The code is still really 'proof of concept'. There is one button that allows you to cycle to the next rom or disk in a directory. Another button takes you to the previous rom or disk. However, I've added a simple boot menu mechanism where an MSX native program (MENU) presents a menu of files from the SD card and lets you boot from one of them.
 
 I used an Omega MSX2 computer to test this. I have not tested it on any other MSX or MSX2 computers.
 As I've discovered with this project there is quite a bit of variation with MSX and MSX2 systems, so
@@ -110,10 +112,10 @@ You can mix these freely with the rom images.
 However, the two drive support allows for some other options. If you 
 create a subdirectory under the msx directory instead of just plonking a .dsk file
 in, the subdirectory is treated as a collection of disk images. The subdirectory can
-be called anything you like. Its name will show up in the kcmfs menu. If say you have a 
+be called anything you like. Its name will show up in the menu. If say you have a 
 game and it has 'Game disk 1.dsk' and 'Game disk 2.dsk' then just copy them with their
 original names into the subdirectory you made. Now when you select that subdirectory
-from kcmfs, it will auto load the 'Game disk 1.dsk' into the A: drive as it is looking for
+from the menu, it will auto load the 'Game disk 1.dsk' into the A: drive as it is looking for
 the text 'disk 1' or 'Disk 1' or 'disk1' or 'Disk1' in the text of the filename. The 2nd disk
 'Game disk 2.dsk' isn't actually loaded in to the B: drive. I found most msx games don't seem
 to want to look at the B: drive. Anyway, when the game asks for the 2nd disk, hit the NEXT button
@@ -121,7 +123,7 @@ and it will put 'Game disk 2.dsk' into the A: drive. Pressing PREV will switch i
 'Game Disk 1.dsk' . If you actually want to put something in to the B: drive it just has to be a 
 file ending in '.dsk2'. If you had a 2 disk game and you had 'Game disk 2.dsk' in the A: drive, 
 and then pressed NEXT, it will actually pop you out of the subdirectory and select the next
-thing in the main list you see in kcmfs.
+thing in the main list you see in the menu.
 
 If all that sounded too complicated, just copy disk and rom files in to the msx directory. That
 still works the same as previous versions.
@@ -130,15 +132,15 @@ Folders (version 2.0 of the firmware)
 
 The msx directory can now be sorted into folders, eg. msx/ROMs/Konami, msx/DSKs/MSX 2 and so on.
 A folder that holds .dsk files and nothing else that can be started (no folders, no roms) is
-one game on several disks, as above. KCMFS shows it as a disk (cyan, with two disks on the marker)
-and starts it on disk 1. Any other folder is a folder you can open in KCMFS.
+one game on several disks, as above. MENU shows it as a disk (cyan, with two disks on the marker)
+and starts it on disk 1. Any other folder is a folder you can open in MENU.
 
  - Only .rom, .mx1, .mx2, .ri, .konami4, .konami5, .ascii8, .ascii16 (roms) and .dsk (disks) are
    used. Other files (.txt, pictures ...) can be left next to them. Hidden files and anything
    starting with a '.' (such as the ._ files macOS leaves behind) are skipped.
  - NEXT and PREV step through the roms, disks and disk sets in the folder you last started
    something from. In a disk set they step through its disks first.
- - Press NEXT and PREV together to get back to KCMFS. It starts when you reset the MSX.
+ - Press NEXT and PREV together to get back to MENU. It starts when you reset the MSX.
  - A rom bigger than 128K runs from flash (below). Over 512K, or on a board with 512K of flash,
    it is not loaded (the one before stays).
  - 180K and 360K images are one sided (9 sectors a track), 720K two sided. Note that disk roms for
@@ -176,10 +178,10 @@ The WD2793 floppy disk controller support was based on WD1793.c in fMSX by Marat
    a multi-disk game it generally works OK if you press NEXT while the computer 
    is running.
 
-There is also now a native MSX program (kcmfs) that presents a list of files on the
-SD card, lets you select one and boot it. To use kcmfs you need to copy the menu.rom
+There is also now a native MSX program (MENU) that presents a list of files on the
+SD card, lets you select one and boot it. To use the menu you need to copy the menu.rom
 file to the root of the SD card. After a reset of the STM32F4 board it will load
-menu.rom instead of the first file in the msx directory. See the section on KCMFS 
+menu.rom instead of the first file in the msx directory. See the section on MENU 
 for more information.
 
 Here's an example of a mix of games on the SD card
@@ -209,7 +211,7 @@ tools/organise_sd.py builds a whole SD card from an MSX collection (a folder of 
 images, zips of BIN games and tapes, as found on many old CDs), without changing the collection:
 
     python tools/organise_sd.py --src <collection> --out <sd folder> --report <report folder> \
-        --db <openMSX>/share/softwaredb.xml --diskrom nms8250_disk.rom --menu kcmfs/menu.rom \
+        --db <openMSX>/share/softwaredb.xml --diskrom nms8250_disk.rom --menu menu/menu.rom \
         --msxdos <a disk with MSXDOS.SYS and COMMAND.COM>
 
 It makes msx/MSX1/ROM, msx/MSX1/Disk, msx/MSX1/Kassett, msx/MSX2/ROM and msx/MSX2/Disk, and for
@@ -298,9 +300,9 @@ Roms over 128K
 They do not fit in the board's RAM (64K of CCM and 64K of RAM hold the rest), so they are
 written to flash sectors 8-11 and run from there, up to 512K. When one is started, the board
 first reads it from the SD card and compares it with what is in flash; only if it differs are the
-sectors erased and written, which takes up to 20 seconds or so (KCMFS says STARTING FROM FLASH).
+sectors erased and written, which takes up to 20 seconds or so (MENU says STARTING FROM FLASH).
 The board does not answer the MSX while it erases or writes (its own code is in flash too), so
-KCMFS waits in RAM for it to say it is done (PREPARE and "RDY!", see the protocol below). The
+MENU waits in RAM for it to say it is done (PREPARE and "RDY!", see the protocol below). The
 same rom again starts straight away, even after a power cycle. Started with NEXT/PREV instead,
 whatever runs on the MSX goes wrong while the flash is written; reset it afterwards.
 
@@ -323,7 +325,7 @@ Upgrading from the SD card
 Copy `upgrade.bin` to the root of the SD card and reset the stm32f4 board (or power it up).
 The emulator sees the file, hands over to the bootloader, which flashes it, checks it and deletes
 upgrade.bin. Then the board restarts with the new firmware. The LEDs on PA6/PA7 (the two LEDs of
-the common STM32F407VET6 'black' board) flicker while it is flashing. The KCMFS menu shows the
+the common STM32F407VET6 'black' board) flicker while it is flashing. The menu shows the
 firmware version in its top line.
 
 - If the file is not an emulator image (for example the -full.bin by mistake) it is renamed to
@@ -333,16 +335,16 @@ firmware version in its top line.
 - A steady blink on PA6/PA7 means there is no working emulator and nothing to flash. Use DFU or
   an ST-Link.
 
-KCMFS
+MENU
 -----
 
-In the kcmfs directory is a Z80 assembly based MSX program that presents a menu to
+In the menu directory is a Z80 assembly based MSX program that presents a menu to
 the user. It lists the files in the msx directory of the SD card and let's 
-you select one, and consequently reboots off it. If you put kcmfs (menu.rom) in
+you select one, and consequently reboots off it. If you put menu.rom in
 the root of the SD card, it will always boot menu.rom  after a reset of the
 STM32F4 board.
 
-KCMFS 3 runs on MSX1 and MSX2, in SCREEN 1. It shows one folder at a time, 19 entries to a
+MENU 3 runs on MSX1 and MSX2, in SCREEN 1. It shows one folder at a time, 19 entries to a
 page, light yellow on black: ".." first (when you are below msx/), then the folders, then the
 roms, disks, disk sets, tapes and music, each sorted by name. The marker in front of a name says
 what it is: yellow folder, cyan disk (two disks for a disk set), magenta cartridge for a rom, green
@@ -370,7 +372,7 @@ RETURN          open the selected folder, start the selected rom, disk, disk set
                 play the selected music
 ```
 
-Starting a disk needs disk.rom in the root of the SD card. Without it KCMFS says so.
+Starting a disk needs disk.rom in the root of the SD card. Without it MENU says so.
 
 Tapes (.cas)
 
@@ -436,7 +438,7 @@ game's slots, POP AF, EI, RET to the game. So
 
 Music (.vgm)
 
-KCMFS plays .vgm files (marked with two notes) on the MSX's own PSG, so it works on any MSX. RETURN
+MENU plays .vgm files (marked with two notes) on the MSX's own PSG, so it works on any MSX. RETURN
 starts one; the music goes on while you move about the list, look at covers or open folders, and
 at the end of a song the next one in the folder follows. ESC stops it, as does starting a game.
 VGM is the usual format for chip music: only what it has for the AY-3-8910 (the PSG) is played,
@@ -448,7 +450,7 @@ does this for the MIDI files in the collection's Midis folder, into msx/Musikk (
 just that). The board hands the file over 16K at a time (command 0x02 below), into two halves of
 the bank window: one is played while the next chunk goes into the other.
 
-tools/test_tapes.py loads every .cas in openMSX this way (with kcmfs/menu-simtape.rom, an ASCII8
+tools/test_tapes.py loads every .cas in openMSX this way (with menu/menu-simtape.rom, an ASCII8
 rom with the tape put in it, since there is no board) and makes report.html with a screenshot of
 each. --reference loads them with openMSX's own cassette player instead, to see which tapes work
 at all, and --shift holds SHIFT at the start. tools/casinfo.py lists what is on a tape. Of the
@@ -468,15 +470,15 @@ them from a scanned box, inlay or advert:
 
 (-Crop cuts the front out of a whole cassette inlay, -Preview also writes Game.png to look at).
 
-menu.rom is 16K. kcmfs/build.sh assembles it with sjasmplus
+menu.rom is 16K. menu/build.sh assembles it with sjasmplus
 (https://github.com/z00m128/sjasmplus). It also builds menu-sim.rom (32K), which has a list of
-made up names and kcmfs/sim-cover.sc2 and kcmfs/sim-song.vgm built in, so you can try the menu
+made up names and menu/sim-cover.sc2 and menu/sim-song.vgm built in, so you can try the menu
 out in openMSX without the stm32f4 board. Those two are not in the repository: make a
 sim-cover.sc2 with tools/make_covers.ps1 and a sim-song.vgm (4K at most) with tools/mid2vgm.py.
 
-The top line reads eg. `KCMFS 3.0.7  FW 2.0.12  MSX2`. The last number of each is a build number
-that counts up by itself: `make` keeps the firmware's in build_number, and kcmfs/build.sh keeps
-the menu's in kcmfs/build_number. Bump the first part (FIRMWARE_VERSION in defines.h, title in
+The top line reads eg. `MENU 3.0.7  FW 2.0.12  MSX2`. The last number of each is a build number
+that counts up by itself: `make` keeps the firmware's in build_number, and menu/build.sh keeps
+the menu's in menu/build_number. Bump the first part (FIRMWARE_VERSION in defines.h, title in
 menu.asm) for new features.
 
 The protocol. While menu.rom is presented, the stm32f4 shows the MSX
@@ -492,7 +494,7 @@ The protocol. While menu.rom is presented, the stm32f4 shows the MSX
 The control block:
 
 ```
-0x8000        - command. kcmfs writes it, the stm32f4 sets it to 0 when it is done
+0x8000        - command. The menu writes it, the stm32f4 sets it to 0 when it is done
                   0x80  list the folder the menu was last in
                   0x20  open the folder (or "..") whose entry number is at 0x8080
                   0x40  start the rom, disk, disk set, tape or snapshot whose entry number is
@@ -519,8 +521,8 @@ The control block:
                 last 31 characters, 0 terminated. While a snapshot is put back, the MSX's own
                 system variables that stay
 0x8064-0x80FF - while a snapshot is put back: AF', the stub and the routine that ends it
-0x8060-0x8063 - "RDY!" after 0x04. kcmfs clears it first
-0x8080/0x8081 - entry number for 0x02, 0x04, 0x10, 0x20 and 0x40, written by kcmfs
+0x8060-0x8063 - "RDY!" after 0x04. The menu clears it first
+0x8080/0x8081 - entry number for 0x02, 0x04, 0x10, 0x20 and 0x40, written by the menu
 0x8084/0x8085 - 8K block of the tape for 0x08
 0x8086/0x8087 - 16K chunk of the song for 0x02
 0x8088        - half of the window for 0x02
@@ -536,7 +538,7 @@ byte 30-31  the size in K, low byte first, 15 bits. 0 for folders and disk sets.
             set if there is a cover
 ```
 
-For 0x40 the rom (menu) goes away under the Z80 while the stm32f4 loads the new one, so kcmfs
+For 0x40 the rom (menu) goes away under the Z80 while the stm32f4 loads the new one, so the menu
 copies a few bytes to RAM at 0xE100 and runs them: they clear 0x8060, write 0x04 and wait for
 all four bytes of "RDY!" there (while flash is written the bus reads 0xFF now and then, which a
 single byte could be mistaken for), then write the 0x40, wait until 0x8000 no longer reads 0x40

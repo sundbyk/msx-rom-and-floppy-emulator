@@ -1,16 +1,16 @@
-"""Put .msxsnap snapshots back in openMSX with KCMFS's code, the way the board would, and check
+"""Put .msxsnap snapshots back in openMSX with the menu's code, the way the board would, and check
 the MSX is as it was when the game goes on.
 
     python tools/test_snapshots.py --openmsx D:/winapps/OpenMSX/openmsx.exe --out sd-rapport/snaptest \
         [--as MSX2] -j 4 Game.msxsnap ...
 
 There is no board, so a 64K RAM cartridge (openMSX's ram64k, put in once BASIC is up) stands in
-for it, holding what the board would show (kcmfs/menu.rom, the control block and the snapshot's
+for it, holding what the board would show (menu/menu.rom, the control block and the snapshot's
 banks, mirrored as the board mirrors them), and Tcl watchpoints do what the board does when the
 MSX writes 0x8001 and 0x8002 (bank at 0xA000 and 0x6000) or the control block (shown at 0x0000
 too). Then menu.rom's init is run. In the stub that goes on to the game (before an interrupt can
 come), RAM, VRAM and the registers are compared with the snapshot (all but the stub's 9 bytes
-below SP, what kcmfs keeps of the MSX's own, and R). Then the game's PC has to come round with its
+below SP, what the menu keeps of the MSX's own, and R). Then the game's PC has to come round with its
 SP, and screenshots are kept. report.html has them.
 """
 import argparse, html, os, struct, subprocess, sys, time
@@ -134,7 +134,7 @@ def check(base, snap, machine):
     if stub != bytes([0xD3, 0xA8, 0xF1, 0xFB if iff else 0, 0xC9]) + struct.pack('<HH', af, pc):
         bad.append('stub %s' % stub.hex())
     # the MSX's own slot tables (EXPTBL, SLTTBL), and on an MSX2 its MSX2 variables (where the
-    # game's stack is not) and the secondary slot register, stay (kcmfs/menu.asm CB_KEEP)
+    # game's stack is not) and the secondary slot register, stay (menu/menu.asm CB_KEEP)
     kept = [(0xFCC1, 0xFCC9), (sp - 9, sp)]
     if snap[0xF341:0xF345] == b'\x03' * 4:
         kept += [(0xF341, 0xF345)]		# RAMAD0-3: the RAM's slot on this MSX
@@ -169,7 +169,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--openmsx', required=True)
     ap.add_argument('--out', required=True)
-    ap.add_argument('--menu', default=os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'kcmfs', 'menu.rom'))
+    ap.add_argument('--menu', default=os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'menu', 'menu.rom'))
     ap.add_argument('--as', dest='as_machine', choices=sorted(MACHINES), default='MSX1')
     ap.add_argument('-j', type=int, default=4)
     ap.add_argument('snaps', nargs='+')

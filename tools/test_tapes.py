@@ -1,10 +1,10 @@
-"""Load .cas tapes in openMSX the way the KCMFS menu does, and see what is on the screen after a while.
+"""Load .cas tapes in openMSX the way the menu does, and see what is on the screen after a while.
 
     python tools/test_tapes.py --openmsx D:/winapps/OpenMSX/openmsx.exe --sd D:/winapps/OpenMSX/sd \
         --out sd-rapport/test_tapes -j 6 [--as MSX2] [tape.cas ...]
 
 Without tapes named, every .cas below --sd/msx is tried. Each one is put in a copy of
-kcmfs/menu-simtape.rom (an ASCII8 rom with the tape from bank 8 on, where the board would have
+menu/menu-simtape.rom (an ASCII8 rom with the tape from bank 8 on, where the board would have
 it) and started on a Philips VG-8020 (MSX1, no disk drive) or with --as MSX2 an NMS 8250. The
 menu's tape code puts the BIOS in RAM with its own TAPION and TAPIN and types the command that
 loads the tape, as it does on the board.
@@ -66,11 +66,11 @@ def main():
     ap.add_argument('--openmsx', required=True)
     ap.add_argument('--sd', required=True)
     ap.add_argument('--out', required=True)
-    ap.add_argument('--rom', default=os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'kcmfs', 'menu-simtape.rom'))
+    ap.add_argument('--rom', default=os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'menu', 'menu-simtape.rom'))
     ap.add_argument('-j', type=int, default=4)
     ap.add_argument('--wait', type=int, default=90, help='emulated seconds after power on')
     ap.add_argument('--as', dest='as_machine', choices=sorted(MACHINES), default='MSX1')
-    ap.add_argument('--reference', action='store_true', help="openMSX's cassette player instead of KCMFS")
+    ap.add_argument('--reference', action='store_true', help="openMSX's cassette player instead of MENU")
     ap.add_argument('--shift', action='store_true',
                     help='hold SHIFT while the MSX starts, so a disk ROM is left out (a name without CAS: '
                          'then means the tape, as on an MSX without disks)')

@@ -985,7 +985,7 @@ int __attribute__((optimize("O0")))  main(void) {
 		memset(&dsk[drive].fil, 0, sizeof(FIL));
 	}
 
-	// attempt to load the special menu rom. See kcmfs. Without it, start on the first rom or disk
+	// attempt to load the special menu rom. See menu/. Without it, start on the first rom or disk
 	first_time = (load_menu_rom() != FR_OK);
 
 	while(1) {

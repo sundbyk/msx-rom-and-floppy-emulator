@@ -61,7 +61,7 @@ docker run -v .:/work -it debian:bullseye-slim
 #arm-none-eabi-objcopy -O ihex msx-rom-and-floppy-emulator.elf msx-rom-and-floppy-emulator.hex
 #arm-none-eabi-objcopy -O binary msx-rom-and-floppy-emulator.elf msx-rom-and-floppy-emulator.bin
 
- cd kcmfs
+ cd menu
 ## Assemble the menu.rom . You will see some warning messages. That's OK.
 ./build.sh menu.asm
 
@@ -74,7 +74,7 @@ exit
 ## msx-rom-and-floppy-emulator directory. It will contain the
 ##  msx-rom-and-floppy-emulator.hex and msx-rom-and-floppy-emulator.bin files
 ## These are just 'the firmware' in two different file formats ; hex and bin. 
-## Inside the msx-rom-and-floppy-emulator directory you should have the kcmfs directory now containing the
+## Inside the msx-rom-and-floppy-emulator directory you should have the menu directory now containing the
 ## menu.rom file.
 
 ## You'll need a firmware flashing tool to get the firmware on to the stm32f407 board. I have no idea

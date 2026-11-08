@@ -7,10 +7,10 @@
 !tools/bootsector720.bin
 *.map
 *.lst
-kcmfs/*.rom
-kcmfs/build.inc
+menu/*.rom
+menu/build.inc
 # Test data for the menu-sim build, made from a picture and a MIDI file (see README)
-kcmfs/sim-*
+menu/sim-*
 __pycache__/
 # Eclipse / STM32CubeIDE project files
 .cproject

@@ -1,4 +1,4 @@
-"""MIDI -> VGM for the MSX's PSG (AY-3-8910), for the KCMFS menu's music player.
+"""MIDI -> VGM for the MSX's PSG (AY-3-8910), for the menu's music player.
 
     python tools/mid2vgm.py song.mid song.vgm [--rate 60] [--stats]
 

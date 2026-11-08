@@ -1,4 +1,4 @@
-; KCMFS - kernelcrash MSX file selector, for msx-rom-and-floppy-emulator
+; MENU - MSX file selector for msx-rom-and-floppy-emulator (KCMFS in kernelcrash's original)
 ;
 ; A 16K rom at 0x4000. The stm32f4 board shows its control block at 0x8000 and the folder
 ; list through an 8K window at 0xA000 (see MENU_CTRL_* in ../defines.h).
@@ -192,7 +192,7 @@ COPYBUF		equ	0xE200		; 256 bytes
 	ds	6, 0
 
 title:
-	db	"KCMFS 3.0."
+	db	"MENU 3.0."
 	include	"build.inc"
 	db	0
 

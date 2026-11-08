@@ -1,5 +1,5 @@
 param([string]$List, [string]$One, [string]$Out, [switch]$Crop, [switch]$Preview)
-# Pictures -> .sc2 covers for the KCMFS menu: a SCREEN 2 picture (256x192, 15 colours, two in
+# Pictures -> .sc2 covers for the menu: a SCREEN 2 picture (256x192, 15 colours, two in
 # each row of 8 pixels), saved the way BSAVE "X.SC2",0,&H37FF,S does (see MENU_COVER_* in
 # ../defines.h), so BLOAD"X.SC2",S shows it too. The picture is fitted in with black round it,
 # and Floyd-Steinberg dithered.

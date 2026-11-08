@@ -1,10 +1,10 @@
-KCMFS
+MENU
 =====
 
 Native MSX based file selector that interacts with the kernelcrash msx-rom-and-floppy
 emulator to let you choose rom or disk images. Runs on MSX1 and MSX2.
 
-Keys, the folder handling and the protocol are in the KCMFS section of ../README.md.
+Keys, the folder handling and the protocol are in the MENU section of ../README.md.
 
 Assembly and Setup
 ==================

@@ -1,6 +1,6 @@
 """Load tapes in openMSX the real way and keep a snapshot of the MSX when the tape motor goes off
-for the last time: for tapes KCMFS's own tape loading can not do (loaders that use all 64K of
-RAM and switch the BIOS ROM back in). KCMFS restores the snapshot and the game carries on.
+for the last time: for tapes the menu's own tape loading can not do (loaders that use all 64K of
+RAM and switch the BIOS ROM back in). MENU restores the snapshot and the game carries on.
 
 The snapshot is not taken at the motor off itself (the CPU is in the BIOS then, and another MSX's
 BIOS has other code there) but at the first instruction after it in RAM with no return address

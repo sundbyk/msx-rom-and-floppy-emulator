@@ -188,7 +188,7 @@
 #define FLASH_SECTOR_SIZE	0x20000
 #define FLASH_SIZE_KB		(*(volatile uint16_t *) 0x1FFF7A22)	// from the chip
 
-// Shown at the top of the KCMFS menu, eg. "2.0.17". Bump the first part for new features.
+// Shown at the top of the menu, eg. "2.0.17". Bump the first part for new features.
 // The last number is counted up by the Makefile each time the emulator is built (see build_number)
 #ifndef FIRMWARE_BUILD
 #define FIRMWARE_BUILD		0
@@ -196,7 +196,7 @@
 #define FIRMWARE_VERSION	"2.0." XSTR(FIRMWARE_BUILD)
 
 // ---------------
-// KCMFS menu interface. While menu.rom is presented the MSX sees
+// Menu interface. While menu.rom is presented the MSX sees
 //   0x8000-0x9FFF  CCM 0x4000-0x5FFF: the control block below. 0x8000-0x80FF can be written
 //   0xA000-0xBFFF  the 8K bank written to 0x8001. Banks 8-15 are high_64k_base, where the
 //                  folder list is: entry n is in bank 8 + n/256 at 0xA000 + (n%256)*32.
@@ -215,14 +215,14 @@
 #define MENU_CTRL_VERSION		0x10	// R: firmware version, 0 terminated
 #define MENU_CTRL_PATH			0x20	// R: folder shown, below msx/. Last 31 characters, 0 terminated
 #define MENU_CTRL_PATH_LENGTH		31
-#define MENU_CTRL_READY			0x60	// R/W: "RDY!" when PREPARE is done. kcmfs clears it first
+#define MENU_CTRL_READY			0x60	// R/W: "RDY!" when PREPARE is done. The menu clears it first
 #define MENU_CTRL_SELECTED		0x80	// W: entry number for PREPARE, LOAD_ROM, CHANGE_DIR and LOAD_COVER, 16 bit
 #define MENU_CTRL_TAPE_BLOCK		0x84	// W: first 8K block of the tape for TAPE_WINDOW, 16 bit
 #define MENU_CTRL_SONG_CHUNK		0x86	// W: 16K chunk of the song for SONG, 16 bit
 #define MENU_CTRL_SONG_HALF		0x88	// W: 0 for banks 3-4, 1 for banks 5-6
 #define MENU_CTRL_WRITABLE		0x100
 
-// Music: SONG puts 16K of a .vgm (chunk MENU_CTRL_SONG_CHUNK) into banks 3-4 or 5-6, for kcmfs
+// Music: SONG puts 16K of a .vgm (chunk MENU_CTRL_SONG_CHUNK) into banks 3-4 or 5-6, for the menu
 // to play on the PSG while one half is loaded and the other played. Chunk 0 is of the entry at
 // MENU_CTRL_SELECTED, the later ones of the same file (so it plays on in another folder). Past the
 // end it reads 0x66, VGM's end
@@ -232,7 +232,7 @@
 // A snapshot (.msxsnap, made by tools/cas_snapshot.py from a tape loaded in openMSX): 64K of
 // RAM, 16K of VRAM and 256 bytes of registers. Starting one presents menu.rom with
 // MENU_CTRL_SNAP set and the RAM in banks 8-15, the VRAM in banks 3-4 and the registers in bank
-// 5, and kcmfs puts it all back and goes on where the MSX was
+// 5, and the menu puts it all back and goes on where the MSX was
 #define MENU_SNAP_SIZE			(0x10000 + 0x4000 + 256)
 #define MENU_SNAP_BANK			3	// VRAM, then the registers
 
@@ -245,7 +245,7 @@
 #define MENU_FLAG_NO_DISK_ROM		0x01	// there is no disk.rom, so disks can not be started
 #define MENU_FLAG_NO_FLASH_ROMS		0x02	// no room in flash for roms over 128K (not an STM32F407VGT6)
 
-// Before LOAD_ROM kcmfs sends PREPARE (from RAM) and waits for "RDY!". A rom over 128K is written
+// Before LOAD_ROM the menu sends PREPARE (from RAM) and waits for "RDY!". A rom over 128K is written
 // to flash then if it is not there already, and the board does not answer the bus while it erases
 // and writes (its code is in flash), so the MSX reads 0xFF from it now and then
 
@@ -275,7 +275,7 @@
 #define MENU_TYPE_DISK_SET		'S'	// a folder with only .dsk files in it: one game on several disks
 #define MENU_TYPE_ROM			'R'
 #define MENU_TYPE_TAPE			'T'	// a .cas
-#define MENU_TYPE_SONG			'M'	// a .vgm, played by kcmfs itself
+#define MENU_TYPE_SONG			'M'	// a .vgm, played by the menu itself
 #define MENU_TYPE_SNAPSHOT		'P'	// a .msxsnap
 
 #define ROM_SUFFIX_ROM		".rom"

@@ -1,10 +1,10 @@
 #!/bin/sh
-# Run from the kcmfs folder. Needs sjasmplus (https://github.com/z00m128/sjasmplus), either in
+# Run from the menu folder. Needs sjasmplus (https://github.com/z00m128/sjasmplus), either in
 # the PATH or named by SJASMPLUS, eg.
 #   SJASMPLUS=/d/user-data/winapps/sjasmplus-1.24.0/sjasmplus-1.24.0.win/sjasmplus.exe sh build.sh
 SJASMPLUS=${SJASMPLUS:-sjasmplus}
 
-# Count the build number up. It goes after the version in the menu's title, eg. "KCMFS 3.0.7"
+# Count the build number up. It goes after the version in the menu's title, eg. "MENU 3.0.7"
 n=$(( $(cat build_number 2>/dev/null || echo 0) + 1 ))
 echo $n > build_number
 echo "	db	\"$n\"" > build.inc

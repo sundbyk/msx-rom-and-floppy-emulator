@@ -20,7 +20,7 @@ The source is left as it is. The SD card gets
   already are left out.
 - Tapes (.cas) go to Kassett, as they are.
 - Music: the MIDI files in Midis/ (zipped or not) become msx/Musikk/Name.vgm (mid2vgm.py), which
-  KCMFS plays on the PSG.
+  MENU plays on the PSG.
 - Covers: the cassette fronts in the tape zips, covers/ and Flyers/ are matched to the games by
   name and made into Game.sc2 next to each version of the game (cover.sc2 in a folder) by
   make_covers.ps1, which this runs on Windows.
@@ -34,7 +34,7 @@ covers in covers.csv, into the --out there is. --music-only does msx/Musikk the 
 
 --snapshots DIR puts the snapshots cas_snapshot.py made (DIR/msx/.../Game.msxsnap, by the tape's
 place on the SD card) next to the tapes on an SD card made before, and moves each of those tapes
-(which KCMFS can not load) into a "Virker ikke" folder below. Take out the ones test_snapshots.py
+(which MENU can not load) into a "Virker ikke" folder below. Take out the ones test_snapshots.py
 does not like first.
 """
 import argparse, collections, csv, hashlib, io, os, re, shutil, struct, subprocess, sys, unicodedata, zipfile
@@ -588,7 +588,7 @@ def do_snapshots(args):
             note('snapshot', cas, rel, 'ok')
     for i, row in enumerate(report_rows):
         if row[0] == 'tape' and row[2] in moved:
-            report_rows[i] = (row[0], row[1], moved[row[2]], 'ok', 'KCMFS can not load it: the snapshot instead')
+            report_rows[i] = (row[0], row[1], moved[row[2]], 'ok', 'MENU can not load it: the snapshot instead')
     return len(moved)
 
 
@@ -642,7 +642,7 @@ def do_tapes(args, namer):
 
 
 # ---------------------------------------------------------------------------------------------
-# music: Midis/ (zips of MIDI files of game music) -> msx/Musikk/Name.vgm, for KCMFS to play
+# music: Midis/ (zips of MIDI files of game music) -> msx/Musikk/Name.vgm, for MENU to play
 
 MUSIC_FOLDER = os.path.join('msx', 'Musikk')
 MUSIC_NAMES = {'nenesis': 'nemesis'}	# spelling in the collection
